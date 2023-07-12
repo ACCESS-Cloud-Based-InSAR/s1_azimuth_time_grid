@@ -26,7 +26,7 @@ def get_azimuth_timing_grid(lon: np.ndarray, lat: np.ndarray, hgt:  np.ndarray, 
     az_arr = np.full((m, n, p),
                      np.datetime64('NaT'),
                      # source: https://stackoverflow.com/a/27469108
-                     dtype='datetime64[s]')
+                     dtype='datetime64[ms]')
 
     for ind_0 in range(m):
         for ind_1 in range(n):
