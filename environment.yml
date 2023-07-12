@@ -1,0 +1,15 @@
+name: azimuth-timing
+channels:
+ - conda-forge
+dependencies:
+ - python
+ - jupyter
+ - rasterio
+ - numpy
+ - matplotlib
+ - pandas
+ - isce3
+ - asf_search
+ - raider
+ - hyp3lib>=1.7
+

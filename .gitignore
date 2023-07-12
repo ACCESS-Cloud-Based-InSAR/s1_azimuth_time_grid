@@ -1,0 +1,77 @@
+# OS Files
+**/.DS_Store
+**/.DS_Store?
+
+# vscode
+.vscode
+
+# env file
+.env
+
+# Vim files
+*.sw[mnop]
+
+# Data Files
+*.zip
+*.tar.gz
+
+# .pyenv files
+.python-version
+
+# pytest files
+.pytest_cache/
+
+# Jupyter files
+*.ipynb_checkpoints
+
+# Python build files
+build/
+
+# Rope Files
+.ropeproject/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
+# Data files
+*.xml
+*.tif
+*.tiff
+*.vrt
+*.json
+*.geojson
+
+# Orbits
+*.EOF
+
+# plots
+*.png
+
+# Latex
+*.tex
+*.aux
+*.synctex*
+*.out
+*.toc
+*.pdf
+*.nav
+*.log
+*.snm
+*.vrb
+*.fdb_latexmk
+*.fls
+
+# Shapefiles
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
