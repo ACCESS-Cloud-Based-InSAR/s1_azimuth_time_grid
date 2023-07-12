@@ -2,9 +2,6 @@ import numpy as np
 import isce3.ext.isce3 as isce
 
 
-SPEED_OF_LIGHT = 299792458.0
-
-
 def get_azimuth_timing_grid(lon: np.ndarray, lat: np.ndarray, hgt:  np.ndarray, orb: isce.core.Orbit) -> np.ndarray:
     '''
     Source: https://github.com/dbekaert/RAiDER/blob/dev/tools/RAiDER/losreader.py#L601C1-L674C22
@@ -49,7 +46,7 @@ def get_azimuth_timing_grid(lon: np.ndarray, lat: np.ndarray, hgt:  np.ndarray, 
                     maxiter=num_iteration,
                     delta_range=10.0)
 
-                rng_seconds = sr / SPEED_OF_LIGHT
+                rng_seconds = sr / isce.core.speed_of_light
                 aztime = aztime + rng_seconds
                 aztime_isce = orb.reference_epoch + isce.core.TimeDelta(aztime)
                 aztime_np = np.datetime64(aztime_isce.isoformat())
