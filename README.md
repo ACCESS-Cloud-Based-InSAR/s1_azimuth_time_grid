@@ -9,7 +9,7 @@ Uses packages for obtaining orbit files for correct position/time. If not avaiab
 Expected to use `ARIA-S1-GUNW` for inputs above.
 
 The motiviation for this package is to do basic interpolation for different phase screens across a geographic cube. 
-This is originally based on code from RAiDER. Joint work of Charlie Marshak and Sim Sangha.
+This is originally based on code from RAiDER. Joint work of Charlie Marshak, Sim Sangha, and David Bekaert.
 
 ## Installation
 
