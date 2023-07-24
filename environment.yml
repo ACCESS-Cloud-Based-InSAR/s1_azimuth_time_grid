@@ -19,3 +19,4 @@ dependencies:
  - flake8-builtins
  - flake8-import-order
  - pytest
+ - pytest-mock
