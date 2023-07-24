@@ -53,7 +53,7 @@ def test_get_slc_id():
 
 
 @pytest.mark.parametrize('ifg_type', ['reference', 'secondary'])
-def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test, ifg_type):
+def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test, ifg_type, orbit_dict_for_azimuth_test):
     """Make sure the SLC start time is within reasonable amount of grid. The flow chart is:
 
     (datetime, lon, lat) --> SLC id --> orbit --> azimuth time grid (via ISCE3)
@@ -67,7 +67,6 @@ def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test, ifg_type):
         lat = ds.latitudeMeta.data - res_y / 2.
         lon = ds.longitudeMeta.data - res_x / 2.
         hgt = ds.heightsMeta.data
-    breakpoint()
     group = 'science/radarMetaData/inputSLC'
     with xr.open_dataset(gunw_azimuth_test, group=f'{group}/{ifg_type}') as ds:
         slc_ids = ds['L1InputGranules'].data
