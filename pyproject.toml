@@ -44,7 +44,10 @@ testpaths = ["tests"]
 [tool.setuptools]
 include-package-data = true
 zip-safe = false
-py-modules = ['s1_azimuth_time_grid']
+
+[tool.setuptools.packages.find]
+include = ["s1_azimuth_time_grid"]
+exclude = ["notebooks*", "tests*"]
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.md"], content-type = "text/markdown"}
