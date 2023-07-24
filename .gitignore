@@ -75,3 +75,12 @@ __pycache__/
 *.dbf
 *.prj
 *.cpg
+
+# Log files
+*.log
+
+# S1 Orbit files
+*.EOF
+
+# Deprecated
+deprecated/

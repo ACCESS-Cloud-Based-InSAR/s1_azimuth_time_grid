@@ -11,5 +11,11 @@ dependencies:
  - isce3
  - asf_search
  - raider
+ - xarray
+ - netcdf4
+ - rioxarray
  - hyp3lib>=1.7
-
+ - flake8-blind-except
+ - flake8-builtins
+ - flake8-import-order
+ - pytest

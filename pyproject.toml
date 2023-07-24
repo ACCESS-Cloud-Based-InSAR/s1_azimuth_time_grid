@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "s1_azimuth_time_grid"
+requires-python = ">=3.10"
+authors = [
+    {name="ARIA Team, Sim Sangha, Charlie Marshak"},
+]
+description = "HyP3 plugin for ISCE2 processing"
+license = {text = "BSD-3-Clause"}
+classifiers=[
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    # insert python dependencies as list here
+]
+dynamic = ["version", "readme"]
+
+[project.optional-dependencies]
+develop = [
+    "flake8",
+    "flake8-import-order",
+    "flake8-blind-except",
+    "flake8-builtins",
+    "pytest",
+    "pytest-cov",
+    "pytest-console-scripts",
+]
+
+[project.urls]
+Homepage = "https://github.com/ACCESS-Cloud-Based-InSAR/azimuth-timing-example"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+
+
+[tool.setuptools_scm]
+
+[tool.ruff]
+line-length = 120
