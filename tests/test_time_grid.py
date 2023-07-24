@@ -188,6 +188,7 @@ input_times = [np.datetime64('2021-01-01T07:00:00'),
                np.datetime64('2021-01-01T07:00:00'),
                np.datetime64('2021-01-01T06:00:00')
                ]
+# Windows are in hours
 windows = [6, 3, 6]
 expected_weights_list = [[.833, .167, 0],
                          [1., 0., 0.],
@@ -232,8 +233,9 @@ def test_inverse_weighting(input_time: np.datetime64,
                                                 temporal_window_hours=temporal_window
                                                 )
 
-    # Weights should be approximately (in this order): .833..., .1666..., 0
-    # Note the delta makes all entries outside of top right corner slightly different
+    # Note the delta makes all entries outside of top left corner slightly different
+    # Due to 1 second delta added - however since model time step is in hours,
+    # The weights are fairly close across 4 x 4 array
     for k in range(3):
         np.testing.assert_almost_equal(expected_weights[k],
                                        out_weights[k],
