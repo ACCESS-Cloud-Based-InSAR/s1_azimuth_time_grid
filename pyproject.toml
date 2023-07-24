@@ -44,6 +44,7 @@ testpaths = ["tests"]
 [tool.setuptools]
 include-package-data = true
 zip-safe = false
+py-modules = ['s1_azimuth_time_grid']
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.md"], content-type = "text/markdown"}
