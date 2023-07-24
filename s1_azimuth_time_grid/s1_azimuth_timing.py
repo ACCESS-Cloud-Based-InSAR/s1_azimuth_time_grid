@@ -2,11 +2,11 @@ import datetime
 import warnings
 
 import asf_search as asf
+import hyp3lib
 import isce3.ext.isce3 as isce
 import numpy as np
 import pandas as pd
 from RAiDER.losreader import get_orbit as get_isce_orbit
-from hyp3lib import get_orb as fetch_orbit_file
 from shapely.geometry import Point
 
 
@@ -117,7 +117,8 @@ def get_s1_azimuth_time_grid(lon: np.ndarray,
                              hgt:  np.ndarray,
                              dt: datetime.datetime) -> np.ndarray:
     """Based on the lon, lat, hgt (3d cube) - obtains an associated s1 orbit
-    file to calculate the azimuth timing across the cube. Requires datetime of
+    file to calculate the azimuth timing across the cube. Requires datetime of acq
+    associated to cube.
 
     Parameters
     ----------
@@ -149,7 +150,7 @@ def get_s1_azimuth_time_grid(lon: np.ndarray,
                          np.datetime64('NaT'),
                          dtype='datetime64[ms]')
         return az_arr
-    orb_file, _ = fetch_orbit_file.downloadSentinelOrbitFile(slc_id)
+    orb_file, _ = hyp3lib.get_orb.downloadSentinelOrbitFile(slc_id)
     orb = get_isce_orbit(orb_file, dt, pad=600)
 
     az_arr = get_azimuth_time_grid(lon, lat, hgt, orb)

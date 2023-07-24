@@ -1,10 +1,13 @@
 import datetime
+from pathlib import Path
 
+import hyp3lib
 import numpy as np
 import pandas as pd
 import pytest
 import xarray as xr
 
+import s1_azimuth_time_grid
 from s1_azimuth_time_grid import (get_inverse_weights_for_dates,
                                   get_n_closest_datetimes,
                                   get_s1_azimuth_time_grid,
@@ -52,14 +55,19 @@ def test_get_slc_id():
             _ = get_slc_id_from_point_and_time(lon_center + 10, lat_center, time)
 
 
-@pytest.mark.parametrize('ifg_type', ['reference', 'secondary'])
-def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test, ifg_type, orbit_dict_for_azimuth_test):
+@pytest.mark.parametrize('ifg_type', ['reference', 'secondary'],)
+def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test: Path,
+                                             ifg_type: str,
+                                             orbit_dict_for_azimuth_test: dict,
+                                             slc_id_dict_for_azimuth_test: dict,
+                                             mocker):
     """Make sure the SLC start time is within reasonable amount of grid. The flow chart is:
 
     (datetime, lon, lat) --> SLC id --> orbit --> azimuth time grid (via ISCE3)
 
     The input (leftmost) datetime should not deviate too much from azimuth time grid and that is the content of test.
     """
+
     group = 'science/grids/imagingGeometry'
     with xr.open_dataset(gunw_azimuth_test, group=group, mode='r') as ds:
         res_x, res_y = ds.rio.resolution()
@@ -78,6 +86,11 @@ def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test, ifg_type, orbit_
     slc_start_time = get_start_time_from_slc_id(slc_ids[n // 2]).to_pydatetime()
 
     # Azimuth time grid
+    mocker.patch('hyp3lib.get_orb.downloadSentinelOrbitFile',
+                 # Hyp3 Lib returns 2 values
+                 return_value=(orbit_dict_for_azimuth_test[ifg_type], ''))
+    mocker.patch('s1_azimuth_time_grid.s1_azimuth_timing._asf_query',
+                 return_value=(slc_id_dict_for_azimuth_test[ifg_type], ''))
     time_grid = get_s1_azimuth_time_grid(lon, lat, hgt, slc_start_time)
 
     abs_diff = np.abs(time_grid - np.datetime64(slc_start_time)) / np.timedelta64(1, 's')
@@ -86,9 +99,16 @@ def test_s1_timing_array_wrt_slc_center_time(gunw_azimuth_test, ifg_type, orbit_
     # And our time we are comparing against is a *start_time*
     assert np.all(abs_diff < 40)
 
+    s1_azimuth_time_grid.s1_azimuth_timing._asf_query.assert_called_once()
+    hyp3lib.get_orb.downloadSentinelOrbitFile.assert_called_once()
+
 
 @pytest.mark.parametrize('ifg_type', ['reference', 'secondary'])
-def test_s1_timing_array_wrt_variance(gunw_azimuth_test, ifg_type):
+def test_s1_timing_array_wrt_variance(gunw_azimuth_test: Path,
+                                      ifg_type: str,
+                                      orbit_dict_for_azimuth_test: dict,
+                                      slc_id_dict_for_azimuth_test: dict,
+                                      mocker):
     """Make sure along the hgt dimension of grid there is very small deviations
     """
     group = 'science/grids/imagingGeometry'
@@ -109,12 +129,21 @@ def test_s1_timing_array_wrt_variance(gunw_azimuth_test, ifg_type):
     slc_start_time = get_start_time_from_slc_id(slc_ids[0]).to_pydatetime()
 
     # Azimuth time grid
+    # Azimuth time grid
+    mocker.patch('hyp3lib.get_orb.downloadSentinelOrbitFile',
+                 # Hyp3 Lib returns 2 values
+                 return_value=(orbit_dict_for_azimuth_test[ifg_type], ''))
+    mocker.patch('s1_azimuth_time_grid.s1_azimuth_timing._asf_query',
+                 return_value=(slc_id_dict_for_azimuth_test[ifg_type], ''))
     X = get_s1_azimuth_time_grid(lon, lat, hgt, slc_start_time)
 
     Z = (X - X.min()) / np.timedelta64(1, 's')
     std_hgt = Z.std(axis=0).max()
     # Asserts the standard deviation in height is less than 2e-3 seconds
     assert np.all(std_hgt < 2e-3)
+
+    s1_azimuth_time_grid.s1_azimuth_timing._asf_query.assert_called_once()
+    hyp3lib.get_orb.downloadSentinelOrbitFile.assert_called_once()
 
 
 def test_n_closest_dts():
