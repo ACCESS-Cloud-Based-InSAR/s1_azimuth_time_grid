@@ -250,10 +250,10 @@ def test_inverse_weighting(input_time: np.datetime64,
 
 
 def test_triple_date_usage():
-    """This test shows that when a time grid has pixels that are closer to two different pairs of date that
-    the weights come out correctly. The scenario is when one of the 3 closest date occurs at center of the grid and
-    some pixels require dates before the center time and some pixels require dates after the same time for
-    interpolation.
+    """This test shows that when a time grid has pixels that are closer to two different pairs of date and that the
+    inverse weights come out correctly. Put slightly differently, the scenario is when one of the 3 closest dates
+    occurs at "center time" of the grid and some pixels require dates before the center time and some pixels
+    require dates after center time.
     """
     date_0 = np.datetime64('2021-01-01T00:00:00')
     date_1 = np.datetime64('2021-01-01T06:00:00')
@@ -263,8 +263,8 @@ def test_triple_date_usage():
     dates = list(map(lambda dt: dt.astype(datetime.datetime), dates))
 
     timing_grid = np.full((3,),
-                        np.datetime64('2021-01-01T00:00:00'),
-                        dtype='datetime64[ms]')
+                          np.datetime64('2021-01-01T00:00:00'),
+                          dtype='datetime64[ms]')
     delta = np.timedelta64(1, 's') * np.array([-10_000, 0, 10_000])
     timing_grid += delta
 
@@ -282,6 +282,6 @@ def test_triple_date_usage():
     assert (w_1[0] <= 0) and (w_1[2] > 0)
     assert (w_2[0] > 0) and (w_2[2] <= 0)
 
-    # per pixel
+    # see previous test for explanation
     sum_weights_per_pixel = np.stack(out_weights, axis=1).sum(axis=1)
     np.testing.assert_almost_equal(1, sum_weights_per_pixel)
