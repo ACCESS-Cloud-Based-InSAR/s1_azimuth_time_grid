@@ -2,7 +2,7 @@ import datetime
 import warnings
 
 import asf_search as asf
-import hyp3lib
+import hyp3lib.get_orb
 import isce3.ext.isce3 as isce
 import numpy as np
 import pandas as pd
